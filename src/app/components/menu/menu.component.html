@@ -1,0 +1,53 @@
+<mat-toolbar color="primary">
+  <span>
+    <button mat-button (click)="rti()">Katedra RTI</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="menu()">Moj menu</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <a routerLink="/zaposleni-lista" mat-button>Zaposleni</a>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button [matMenuTriggerFor]="menuObavestenja">Obaveštenja</button>
+      <mat-menu #menuObavestenja="matMenu">
+        <a style="color:black" mat-menu-item routerLink="/obavestenja/0">Pozivi za studentska takmičenja</a>
+        <a style="color:black" mat-menu-item routerLink="/obavestenja/1">Konferencije</a>
+        <a style="color:black" mat-menu-item routerLink="/obavestenja/2">Ponude za praksu</a>
+        <a style="color:black" mat-menu-item routerLink="/obavestenja/3">Ponude za posao</a>
+      </mat-menu>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button [matMenuTriggerFor]="menuStudije">Osnovne studije</button>
+      <mat-menu #menuStudije="matMenu">
+        <a style="color:black" mat-menu-item routerLink="/predmeti-lista/0">Odsek RTI</a>
+        <a style="color:black" mat-menu-item routerLink="/predmeti-lista/1">Odsek SI</a>
+        <a style="color:black" mat-menu-item routerLink="/predmeti-lista/2">Ostali odseci</a>
+      </mat-menu>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <a routerLink="predmeti-lista/3" mat-button>Master studije</a>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <a routerLink="" mat-button>Projekti</a>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button [matMenuTriggerFor]="menuNauka">Nauka</button>
+      <mat-menu #menuNauka="matMenu">
+        <button mat-menu-item>Istraživanja</button>
+        <button mat-menu-item>Naučni projekti</button>
+      </mat-menu>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <a routerLink="" mat-button>Kontakt</a>
+  </span>
+</mat-toolbar>
+

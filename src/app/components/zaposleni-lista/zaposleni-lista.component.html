@@ -1,0 +1,46 @@
+<!------------------------------------------------ Plan angazovanja ---------------------------------------------------------->
+<span *ngIf="zaposlen != null">
+<span *ngIf="zaposlen.tipZvanja == 'Nastavni'">
+  <main>
+    <h1><b>Vaš plan angažovanja, {{zaposlen.ime}} {{zaposlen.prezime}}</b></h1>
+    <mat-card>
+      <li *ngFor='let g of grupe'>
+       <b>Šifra predmeta: </b> {{g.predmet}}
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b> Grupa:</b>  {{g.grupa}}
+        <br/>
+        <hr/>
+        <br/>
+      </li>
+      <span *ngIf='grupe.length == 0' style="color:red"><b>Nema dostupnih angažovanja</b></span>
+      <br/>
+    </mat-card>
+  </main>
+</span>
+</span>
+
+<!------------------------------------------------ Lista zaposlenih ---------------------------------------------------------->
+
+<span *ngIf="1">
+  <main>
+    <h1><b>Lista svih zaposlenih</b></h1>
+    <mat-card>
+      <li *ngFor='let z of zaposleni'>
+        {{z.ime}} {{z.prezime}}
+        <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{z.zvanje}}
+         <span *ngIf="z.tipZvanja == 'Nastavni'">
+          <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a routerLink="/profil/{{z.korime}}"> {{z.ime}}_info </a>
+        </span>
+        <br/><hr/><br/>
+      </li>
+      <br/>
+    </mat-card>
+  </main>
+</span>
+<br/>
+
+
+
+
+

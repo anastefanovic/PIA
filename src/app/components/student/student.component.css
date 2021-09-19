@@ -1,0 +1,36 @@
+
+span {
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: purple;
+  text-decoration-line: underline;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+
+main {
+  width: 60%;
+  margin: 2rem auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.errorMessage {
+  color: red;
+}
+
+mat-card {
+  width: 60%;
+}
+
+

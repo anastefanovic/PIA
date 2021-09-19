@@ -1,0 +1,33 @@
+<main>
+    <h1><b>Informacije o zaposlenom: </b></h1>
+    <mat-card>
+      <div class="image" *ngIf="zaposlen.slikaPath != null">
+        <img [src]="zaposlen.slikaPath" [alt]="zaposlen.korime">
+      </div>
+      <br/>
+      <div class="text">
+      <b>Ime i prezime: </b> {{zaposlen.ime}} {{zaposlen.prezime}}
+      <br/><br/>
+      <b>E-mail adresa: </b> {{zaposlen.email}}
+      <br/><br/>
+      <b>Adresa:  </b> {{zaposlen.adresa}}
+      <br/><br/>
+      <b>Zvanje:  </b> {{zaposlen.zvanje}}
+      <br/><br/>
+      <b>Kabinet:  </b> {{zaposlen.kabinet}}
+      <br/><br/>
+      <span *ngIf="zaposlen.bio!='' && zaposlen.bio">
+      <b>Biografija:  </b> {{zaposlen.bio}}
+      <br/><br/>
+      </span>
+      <span *ngIf="zaposlen.vebsajt!='' && zaposlen.vebsajt && zaposlen.vebsajt != 'undefined'">
+        <b>Vebsajt:  </b><a [href]="zaposlen.vebsajt" target="blank">{{zaposlen.vebsajt}}</a>
+        <br/><br/>
+      </span>
+      <span *ngIf="zaposlen.mobilni!='' && zaposlen.mobilni">
+        <b>Broj telefona:  </b> {{zaposlen.mobilni}}
+        <br/><br/>
+      </span>
+    </div>
+    </mat-card>
+</main>

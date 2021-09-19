@@ -1,0 +1,120 @@
+<!------------------------------------------------ Menu------------------------------------------------>
+
+<mat-toolbar color="primary">
+  <span *ngIf="zaposlen != null">
+    {{zaposlen.ime}} {{zaposlen.prezime}}
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('profil')">Profil</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('predmeti')">Moji predmeti</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('lozinka')">Promena lozinke</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onLogout()">Odjava</button>
+  </span>
+</mat-toolbar>
+
+<!------------------------------------------------ Profil ------------------------------------------------>
+
+<span *ngIf="expand == 'profil'">
+  <span *ngIf="zaposlen != null">
+  <main>
+    <h1><b>Informacije o Vama: </b></h1>
+    <mat-card>
+      <div class="image" *ngIf="zaposlen.slikaPath != null">
+        <img [src]="zaposlen.slikaPath" [alt]="zaposlen.korime">
+      </div>
+      <br/>
+      <div class="text">
+      <b>Ime i prezime: </b> {{zaposlen.ime}} {{zaposlen.prezime}}
+      <br/><br/>
+      <b>E-mail adresa: </b> {{zaposlen.email}}
+      <br/><br/>
+      <b>Adresa:  </b> {{zaposlen.adresa}}
+      <br/><br/>
+      <b>Zvanje:  </b> {{zaposlen.zvanje}}
+      <br/><br/>
+      <b>Kabinet:  </b> {{zaposlen.kabinet}}
+      <br/><br/>
+      <span *ngIf="zaposlen.bio!='' && zaposlen.bio">
+      <b>Biografija:  </b> {{zaposlen.bio}}
+      <br/><br/>
+      </span>
+      <span *ngIf="zaposlen.vebsajt!='' && zaposlen.vebsajt && zaposlen.vebsajt != 'undefined'">
+        <b>Vebsajt:  </b><a [href]="zaposlen.vebsajt" target="blank">{{zaposlen.vebsajt}}</a>
+        <br/><br/>
+      </span>
+      <span *ngIf="zaposlen.mobilni!='' && zaposlen.mobilni">
+        <b>Broj telefona:  </b> {{zaposlen.mobilni}}
+        <br/><br/>
+      </span>
+    </div>
+    </mat-card>
+    <br/>
+    <button mat-raised-button color="primary" color="accent" (click)="onClick('update profil')">Izmenite profil</button>
+  </main>
+</span>
+</span>
+
+<!------------------------------------------------ Profil update ------------------------------------------->
+
+<span *ngIf="expand == 'update profil'">
+  <main>
+    <h2><b>Izmena podataka</b></h2>
+    <mat-card>
+        <form (submit)="onZaposlenUpdate(signupForm)" #signupForm="ngForm">
+            <mat-form-field>
+              <input type="text" matInput placeholder="Adresa" [(ngModel)]="zaposlen.adresa" name="adresa" #adresaInput="ngModel" required="true">
+              <mat-error *ngIf="adresaInput.invalid">Obavezno polje!</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input type="number" matInput placeholder="Broj kabineta" [(ngModel)]="zaposlen.kabinet" name="kabinet" #kabinetInput="ngModel" required="true">
+              <mat-error *ngIf="kabinetInput.invalid">Obavezno polje!</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <textarea matInput placeholder="Vasa strucna bografija:" [(ngModel)]="zaposlen.bio" name="bio" #bioInput="ngModel"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <input type="number" matInput placeholder="Broj telefona" [(ngModel)]="zaposlen.mobilni" name="mobilni" #mobilniInput="ngModel">
+            </mat-form-field>
+            <br/><br/>
+          <button mat-raised-button color="primary" type="submit">Sačuvajte</button>
+        </form>
+    </mat-card>
+  </main>
+</span>
+
+<!------------------------------------------------ Predmeti ------------------------------------------------>
+
+<span *ngIf="expand == 'predmeti'">
+  <main>
+  <h2><b>Vaša angažovanja na predmetima</b></h2>
+  <span *ngFor="let i of semestri">
+    <span *ngIf="poSemestru(i).length > 0">
+      <br/>
+      <h4><b>Semestar {{i}}</b></h4>
+      <mat-card>
+      <li *ngFor="let g of grupePoSemestru(i)">
+        <a routerLink="/predmet/{{g.predmet}}/zaposlen/{{korime}}">{{g.predmet}}</a>
+        <br/> &nbsp;&nbsp;&nbsp;&nbsp; grupa {{g.grupa}}
+        <br/> &nbsp;&nbsp;&nbsp;&nbsp; {{termin(g.predmet, g.grupa)}}
+    </li>
+    </mat-card>
+    </span>
+   </span>
+  </main>
+</span>
+
+<!------------------------------------------------ Lozinka ------------------------------------------------>
+
+<span *ngIf="expand == 'lozinka'">
+<app-lozinka></app-lozinka>
+</span>

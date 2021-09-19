@@ -1,0 +1,524 @@
+<!------------------------------------------------ Menu------------------------------------------------>
+
+<mat-toolbar color="primary">
+  <span>
+    Administrator
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button  [matMenuTriggerFor]="zaposleni">Izmena zaposlenih</button>
+      <mat-menu #zaposleni="matMenu">
+        <button mat-menu-item (click)="onClick('insert zaposlen')">Dodavanje</button>
+        <button mat-menu-item (click)="onClick('update zaposlen')">Ažuriranje</button>
+        <button mat-menu-item (click)="onClick('delete zaposlen')">Brisanje</button>
+      </mat-menu>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button [matMenuTriggerFor]="studenti" >Izmena studenata</button>
+      <mat-menu #studenti="matMenu">
+        <button mat-menu-item (click)="onClick('insert student')">Dodavanje</button>
+        <button mat-menu-item (click)="onClick('update student')">Ažuriranje</button>
+        <button mat-menu-item (click)="onClick('delete student')">Brisanje</button>
+      </mat-menu>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button [matMenuTriggerFor]="predmeti">Izmena predmeta</button>
+      <mat-menu #predmeti="matMenu">
+        <button mat-menu-item (click)="onClick('insert predmet')">Dodavanje</button>
+        <button mat-menu-item (click)="onClick('update predmet')">Ažuriranje</button>
+        <button mat-menu-item (click)="onClick('delete predmet')">Brisanje</button>
+      </mat-menu>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button [matMenuTriggerFor]="angazovanja">Plan angazovanja</button>
+      <mat-menu #angazovanja="matMenu">
+        <button mat-menu-item (click)="onClick('ang grupa')">Dodavanje grupe</button>
+        <button mat-menu-item (click)="onClick('ang studenti')">Ubacivanje studenata</button>
+      </mat-menu>
+  </span>
+  <span class="spacer"></span>
+    <span>
+      <button mat-button (click)="onClick('lozinka')">Promena lozinke</button>
+    </span>
+    <span class="spacer"></span>
+    <span>
+      <button mat-button (click)="onLogout()">Odjava</button>
+    </span>
+</mat-toolbar>
+
+<!------------------------------------------------ Lozinka ------------------------------------------------>
+
+<span *ngIf="mode == 'lozinka'">
+  <app-lozinka></app-lozinka>
+</span>
+
+<!------------------------------------------------ Insert student ------------------------------------------------>
+
+<span *ngIf="mode == 'insert student'">
+  <app-student-signup></app-student-signup>
+</span>
+
+<!------------------------------------------------ Insert zaposlen ------------------------------------------------>
+
+<span *ngIf="mode == 'insert zaposlen'">
+  <app-zaposlen-signup></app-zaposlen-signup>
+</span>
+
+<!------------------------------------------------ Insert predmet ------------------------------------------------>
+
+<span *ngIf="mode == 'insert predmet'">
+  <main>
+    <mat-card>
+      <h2><b>Registracija novog predmeta</b></h2>
+      <form (submit)="onPredmetInsert(signupForm)" #signupForm="ngForm">
+        <mat-form-field>
+          <input type="text" matInput placeholder="Ime" [(ngModel)]="predmet.ime" name="ime" #imeInput="ngModel" required="true">
+          <mat-error *ngIf="imeInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Sifra" [(ngModel)]="predmet.sifra" name="sifra" #sifraInput="ngModel" required="true">
+          <mat-error *ngIf="sifraInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+       <span style="color:red">{{predmetNotUniqueError}}</span>
+        <mat-form-field appearance="fill">
+          <mat-label>Tip predmeta</mat-label>
+          <mat-select [(ngModel)]="predmet.tip" name="tipPredmeta" #tipPredmetaInput="ngModel" required="true">
+            <mat-option  [value]="'obavezan'">Obavezan</mat-option>
+            <mat-option  [value]="'izborni'">Izborni</mat-option>
+          </mat-select>
+          <mat-error tipPredmetaInput.invalid>Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" matInput placeholder="ESPB" [(ngModel)]="predmet.espb" name="espb" #espbInput="ngModel" required="true">
+          <mat-error *ngIf="espbInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Termini predavanja:</mat-label>
+          <textarea [(ngModel)]="predmet.predavanja" name="predavanja" #predavanjaInput="ngModel" matInput placeholder="Termini predavanja" required="true"></textarea>
+          <mat-error *ngIf="predavanjaInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Termini vezbi</mat-label>
+          <textarea [(ngModel)]="predmet.vezbe" name="vezbe" #vezbeInput="ngModel" matInput placeholder="Termini vezbi" required="true"></textarea>
+          <mat-error *ngIf="vezbeInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" matInput placeholder="Semestar" [(ngModel)]="predmet.semestar" name="semestar" #semestarInput="ngModel" required="true">
+          <mat-error *ngIf="semestarInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{semestarError}}</span>
+        <mat-form-field class="example-full-width">
+          <mat-label>Cilj predmeta</mat-label>
+          <textarea [(ngModel)]="predmet.cilj" name="ciljPredmeta" #ciljInput="ngModel" matInput placeholder="Cilj predmeta"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Propozicije</mat-label>
+          <textarea [(ngModel)]="predmet.propozicije" name="propozicije" #propozicijeInput="ngModel" matInput placeholder="Propozicije predmeta"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Predavaci</mat-label>
+          <textarea [(ngModel)]="nastavnici" name="nastavnici" #nastavniciInput="ngModel" matInput placeholder="Predavaci" required="true"></textarea>
+          <mat-error *ngIf="nastavniciInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{predmetNastavniciError}}</span>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Smer (RTI, SI, ili OSTALO)" [(ngModel)]="predmet.smer" name="smer" #smerInput="ngModel" required="true">
+          <mat-error *ngIf="smerInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" type="submit">Registracija</button>
+      </form>
+    </mat-card>
+  </main>
+</span>
+
+<!------------------------------------------------ Update student ------------------------------------------------>
+
+<span *ngIf="mode == 'update student'">
+  <main>
+    <h2><b>Izmena podataka o studentu</b></h2>
+  <mat-card>
+    <div>
+      <form>
+        Unesite korisničko ime studenta:
+        <mat-form-field>
+          <input type="text" matInput placeholder="piGGBBBBx@student.etf.bg.ac.rs"  [(ngModel)]="studentUpdateKorime" name="korimeUpdate" #korimeUpdate="ngModel" required="true">
+          <mat-error *ngIf="korimeUpdate.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{updateStudentError}}</span>
+        <br/>
+        <button mat-raised-button color="primary" (click)="findStudent()">Pretrazite</button>
+      </form>
+    </div>
+    </mat-card>
+    <mat-card>
+    <div *ngIf="renderStudentUpdate == 1">
+    <form (submit)="onStudentUpdate(signupForm)" #signupForm="ngForm">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Ime" [(ngModel)]="student.ime" name="ime" #imeInput="ngModel" required="true">
+        <mat-error *ngIf="imeInput.invalid">Obavezno polje!</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="Prezime" [(ngModel)]="student.prezime" name="prezime" #prezimeInput="ngModel" required="true">
+        <mat-error *ngIf="prezimeInput.invalid">Obavezno polje!</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="Indeks (GGGG/BBBB)" [(ngModel)]="student.indeks" name="indeks" #indeksInput="ngModel" required="true">
+        <mat-error *ngIf="indeksInput.invalid">Obavezno polje!</mat-error>
+      </mat-form-field>
+      <span class='errorMessage'>
+        {{updateIndeksError}}
+      </span>
+      <mat-form-field appearance="fill">
+        <mat-label>Tip studija</mat-label>
+        <mat-select [(ngModel)]="student.tipStudija" name="tipStudija" #tipStudijaInput="ngModel" required="true">
+          <mat-option *ngFor="let studije of tipovi_studija" [value]="studije">
+            {{studije}}
+          </mat-option>
+        </mat-select>
+        <mat-error tipStudijaInput.invalid>Obavezno polje!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="student.status" name="status" #statusInput="ngModel" required="true">
+          <mat-option [value]="'Aktivan'">Aktivan</mat-option>
+          <mat-option [value]="'Neaktivan'">Neaktivan</mat-option>
+        </mat-select>
+        <mat-error tipStudijaInput.invalid>Obavezno polje!</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Sačuvajte izmene</button>
+    </form>
+  </div>
+  </mat-card>
+</main>
+</span>
+
+<!------------------------------------------------ Update zaposlen ------------------------------------------------>
+
+<span *ngIf="mode == 'update zaposlen'">
+  <main>
+    <h2><b>Izmena podataka o zaposlenom</b></h2>
+  <mat-card>
+    <div>
+      <form>
+        Unesite korisničko ime zaposlenog:
+        <mat-form-field>
+          <input type="text" matInput placeholder="korisničko ime"  [(ngModel)]="zaposlenKorime" name="korimeUpdate" #korimeUpdate="ngModel" required="true">
+          <mat-error *ngIf="korimeUpdate.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{updateZaposlenError}}</span>
+        <br/>
+        <button mat-raised-button color="primary" (click)="findZaposlen()">Pretražite</button>
+      </form>
+    </div>
+    </mat-card>
+    <mat-card>
+    <div *ngIf="renderZaposlenUpdate == 1">
+        <form (submit)="onZaposlenUpdate(signupForm)" #signupForm="ngForm">
+          <mat-form-field>
+            <input type="text" matInput placeholder="Ime" [(ngModel)]="zaposlen.ime" name="ime" #imeInput="ngModel" required="true">
+            <mat-error *ngIf="imeInput.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Prezime" [(ngModel)]="zaposlen.prezime" name="prezime" #prezimeInput="ngModel" required="true">
+            <mat-error *ngIf="prezimeInput.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Korisnicko ime" [(ngModel)]="zaposlen.korime" name="korime" #korimeInput="ngModel" required="true">
+            <mat-error *ngIf="korimeInput.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <span class='errorMessage'>
+            {{zaposlenKorimeError}}
+          </span>
+          <mat-form-field>
+            <input type="password" matInput placeholder="Lozinka" [(ngModel)]="zaposlen.lozinka" name="lozinka" #lozinkaInput="ngModel" required="true">
+            <mat-error *ngIf="lozinkaInput.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Adresa" [(ngModel)]="zaposlen.adresa" name="adresa" #adresaInput="ngModel" required="true">
+            <mat-error *ngIf="adresaInput.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Mobilni telefon" [(ngModel)]="zaposlen.mobilni" name="mobilni" #mobilniInput="ngModel">
+          </mat-form-field>
+          <span class='errorMessage'>
+            {{zaposlenMobilniError}}
+          </span>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Adresa licnog vebsajta" [(ngModel)]="zaposlen.vebsajt" name="vebsajt" #vebsajtInput="ngModel">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Licni podaci</mat-label>
+            <textarea matInput placeholder="Vasa strucna bografija:" [(ngModel)]="zaposlen.bio" name="bio" #bioInput="ngModel"></textarea>
+          </mat-form-field>
+          <mat-radio-group aria-label="Tip zvanja:" color="primary" name="tipZvanja" #tipInput="ngModel" [(ngModel)]="zaposlen.tipZvanja">
+            <mat-radio-button value="Nastavni" [checked]="true">Nastavno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+            <mat-radio-button value="Nenastavni">Nenastavno</mat-radio-button>
+          </mat-radio-group>
+          <div *ngIf="zaposlen.tipZvanja == 'Nenastavni'">
+            <mat-form-field appearance="fill">
+              <mat-label>Nenastavno zvanje</mat-label>
+              <mat-select [(ngModel)]="zaposlen.zvanje" name="nenastavnoZvanje" #nenastavnoZvanjeInput="ngModel" required="zaposlen.tipZvanja == 'Nenastavni'">
+                <mat-option *ngFor="let zvanje of nenastavna_zvanja" [value]="zvanje">
+                  {{zvanje}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="zaposlen.tipZvanja=='Nenastavni' && nenastavnoZvanjeInput.invalid">Obavezno polje!</mat-error>
+            </mat-form-field>
+          </div>
+          <div *ngIf="zaposlen.tipZvanja == 'Nastavni'">
+            <mat-form-field appearance="fill">
+              <mat-label>Nastavno zvanje</mat-label>
+              <mat-select [(ngModel)]="zaposlen.zvanje" name="nastavnoZvanje" #nastavnoZvanjeInput="ngModel" required="zaposlen.tipZvanja == 'Nastavni'">
+                <mat-option *ngFor="let zvanje of nastavna_zvanja" [value]="zvanje">
+                  {{zvanje}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="zaposlen.tipZvanja=='Nastavni' && nastavnoZvanjeInput.invalid">Obavezno polje!</mat-error>
+            </mat-form-field>
+          </div>
+          <mat-form-field>
+            <input type="number" matInput placeholder="Broj kabineta" [(ngModel)]="zaposlen.kabinet" name="kabinet" #kabinetInput="ngModel" required="true">
+            <mat-error *ngIf="kabinetInput.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="zaposlen.status" name="status" #statusInput="ngModel" required="true">
+              <mat-option [value]="'Aktivan'">Aktivan</mat-option>
+              <mat-option [value]="'Neaktivan'">Neaktivan</mat-option>
+            </mat-select>
+            <mat-error tipStudijaInput.invalid>Obavezno polje!</mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit">Azuriranje</button>
+        </form>
+    </div>
+  </mat-card>
+</main>
+</span>
+
+<!------------------------------------------------ Update predmet ------------------------------------------------>
+
+<span *ngIf="mode == 'update predmet'">
+  <main>
+    <h2><b>Izmena podataka o predmetu</b></h2>
+  <mat-card>
+    <div>
+      <form>
+        Unesite sifru predmeta:
+        <mat-form-field>
+          <input type="text" matInput placeholder="Sifra predmeta"  [(ngModel)]="predmetSifra" name="sifra" #sifraInput ="ngModel" required="true">
+          <mat-error *ngIf="sifraInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{updatePredmetError}}</span>
+        <br/>
+        <button mat-raised-button color="primary" (click)="findPredmet()">Pretrazite</button>
+      </form>
+    </div>
+    </mat-card>
+    <mat-card>
+    <div *ngIf="renderPredmetUpdate == 1">
+      <form (submit)="onPredmetUpdate(signupForm)" #signupForm="ngForm">
+        <mat-form-field>
+          <input type="text" matInput placeholder="Ime" [(ngModel)]="predmet.ime" name="ime" #imeInput="ngModel" required="true">
+          <mat-error *ngIf="imeInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Sifra" [(ngModel)]="predmet.sifra" name="sifra" #sifraInput="ngModel" required="true">
+          <mat-error *ngIf="sifraInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+       <span style="color:red">{{predmetNotUniqueError}}</span>
+        <mat-form-field appearance="fill">
+          <mat-label>Tip predmeta</mat-label>
+          <mat-select [(ngModel)]="predmet.tip" name="tipPredmeta" #tipPredmetaInput="ngModel" required="true">
+            <mat-option  [value]="'obavezan'">Obavezan</mat-option>
+            <mat-option  [value]="'izborni'">Izborni</mat-option>
+          </mat-select>
+          <mat-error tipPredmetaInput.invalid>Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" matInput placeholder="ESPB" [(ngModel)]="predmet.espb" name="espb" #espbInput="ngModel" required="true">
+          <mat-error *ngIf="espbInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Termini predavanja:</mat-label>
+          <textarea [(ngModel)]="predmet.predavanja" name="predavanja" #predavanjaInput="ngModel" matInput required="true" placeholder="Termini predavanja"></textarea>
+          <mat-error *ngIf="predavanjaInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Termini vezbi</mat-label>
+          <textarea [(ngModel)]="predmet.vezbe" name="vezbe" #vezbeInput="ngModel" required="true" matInput placeholder="Termini vezbi"></textarea>
+          <mat-error *ngIf="vezbeInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" matInput placeholder="Semestar" [(ngModel)]="predmet.semestar" name="semestar" #semestarInput="ngModel" required="true">
+          <mat-error *ngIf="semestarInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{semestarError}}</span>
+        <mat-form-field class="example-full-width">
+          <mat-label>Cilj predmeta</mat-label>
+          <textarea [(ngModel)]="predmet.cilj" name="ciljPredmeta" #ciljInput="ngModel" matInput placeholder="Cilj predmeta"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Propozicije</mat-label>
+          <textarea [(ngModel)]="predmet.propozicije" name="propozicije" #propozicijeInput="ngModel" matInput placeholder="Propozicije predmeta"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Predavaci</mat-label>
+          <textarea [(ngModel)]="nastavnici" name="nastavnici" #nastavniciInput="ngModel" required="true" matInput placeholder="Predavaci"></textarea>
+          <mat-error *ngIf="nastavniciInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{predmetNastavniciError}}</span>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Smer (RTI, SI, ili OSTALO)" [(ngModel)]="predmet.smer" name="smer" #smerInput="ngModel" required="true">
+          <mat-error *ngIf="smerInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <br/>
+        <button mat-raised-button color="primary" type="submit">Registracija</button>
+      </form>
+  </div>
+  </mat-card>
+</main>
+</span>
+
+<!------------------------------------------------ Delete student ------------------------------------------------>
+
+<span *ngIf="mode == 'delete student'">
+  <main>
+    <h2><b>Brisanje studenta</b></h2>
+  <mat-card>
+    <div>
+      <form>
+        Unesite korisnicko ime studenta:
+        <mat-form-field>
+          <input type="text" matInput placeholder="piGGBBBBx@student.etf.bg.ac.rs"  [(ngModel)]="studentUpdateKorime" name="korimeUpdate" #korimeUpdate="ngModel" required="true">
+          <mat-error *ngIf="korimeUpdate.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{deleteStudentError}}</span>
+        <br/>
+        <button mat-raised-button color="primary" (click)="onStudentDelete()">Obrišite</button>
+      </form>
+    </div>
+  </mat-card>
+  <br/>
+  <span style="color: green">{{deletedStudent}}</span>
+  </main>
+  </span>
+
+
+<!------------------------------------------------ Delete predmet ------------------------------------------------>
+
+<span *ngIf="mode == 'delete predmet'">
+  <main>
+    <h2><b>Brisanje predmeta</b></h2>
+  <mat-card>
+    <div>
+      <form>
+        Unesite sifru predmeta:
+        <mat-form-field>
+          <input type="text" matInput  [(ngModel)]="predmetSifra" name="predmetDelete" #predmetDelete="ngModel" required="true">
+          <mat-error *ngIf="predmetDelete.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{deletePredmetError}}</span>
+        <br/>
+        <button mat-raised-button color="primary" (click)="onPredmetDelete()">Obrišite</button>
+      </form>
+    </div>
+    </mat-card>
+    <br/>
+    <span style="color: green">{{deletedPredmet}}</span>
+    </main>
+    </span>
+
+  <!------------------------------------------------ Delete zaposlen ------------------------------------------------>
+
+<span *ngIf="mode == 'delete zaposlen'">
+  <main>
+  <h2><b>Brisanje zaposlenog</b></h2>
+  <mat-card>
+      <div>
+        <form>
+          Unesite korisnicko ime:
+          <mat-form-field>
+            <input type="text" matInput  [(ngModel)]="zaposlenKorime" name="zaposlenKorime" #zaposlenKorimeInput="ngModel" required="true">
+            <mat-error *ngIf="zaposlenKorimeInput.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <span style="color:red">{{deleteZaposlenError}}</span>
+          <br/>
+          <button mat-raised-button color="primary" (click)="onZaposlenDelete()">Obrišite</button>
+        </form>
+      </div>
+    </mat-card>
+    <br/>
+  <span style="color: green">{{deletedZaposlen}}</span>
+  </main>
+</span>
+
+<!------------------------------------------------ Ang grupa ------------------------------------------------>
+
+<span *ngIf="mode == 'ang grupa'">
+  <main>
+  <h2><b>Dodavanje nove grupe</b></h2>
+  <mat-card>
+        <form (submit)="onGrupaInsert(signupForm)" #signupForm="ngForm">
+          Unesite šifru predmeta:
+          <mat-form-field>
+            <input type="text" matInput [(ngModel)]="grupa.predmet" name="grupaPredmet" #grupaPredmet="ngModel" required="true">
+            <mat-error *ngIf="grupaPredmet.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <span style="color:red">{{predmetError}}</span>
+          <br/>
+          Unesite naziv grupe:
+          <mat-form-field>
+            <input type="text" matInput placeholder="Pi ili Vi, gde je 'i' neki broj" [(ngModel)]="grupa.grupa" name="grupaGrupa" #grupaGrupa="ngModel" required="true">
+            <mat-error *ngIf="grupaGrupa.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <span style="color:red">{{grupaError}}</span>
+          <br/>
+          Unesite nastavnike:
+          <mat-form-field class="example-full-width">
+            <textarea [(ngModel)]="nastavnici" name="nastavnici" #grupaNastavnici="ngModel" required="true" matInput placeholder="Unos po korisnickom imenu"></textarea>
+            <mat-error *ngIf="grupaNastavnici.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <span style="color:red">{{nastavniciError}}</span>
+          <br/>
+          <button mat-raised-button color="primary" type="submit">Sačuvajte</button>
+        </form>
+    </mat-card>
+  </main>
+</span>
+
+<!------------------------------------------------ Ang studenti ------------------------------------------------>
+
+<span *ngIf="mode == 'ang studenti'">
+  <main>
+  <h2><b>Dodavanje studenata u grupe</b></h2>
+  <mat-card>
+        <form (submit)="onRasporedInsert(signupForm)" #signupForm="ngForm">
+          Unesite studenta:
+          <mat-form-field>
+            <input type="text" matInput placeholder="Unos pokorisničkom imenu" [(ngModel)]="raspored.student" name="rasporedStudent" #rasporedStudent="ngModel" required="true">
+            <mat-error *ngIf="rasporedStudent.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <span style="color:red">{{rasporedStudentError}}</span>
+          <br/>
+          Unesite predmet:
+          <mat-form-field>
+            <input type="text" matInput placeholder="Unos po šifri" [(ngModel)]="raspored.predmet" name="rasporedPredmet" #rasporedPredmet="ngModel" required="true">
+            <mat-error *ngIf="rasporedPredmet.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <br/>
+          Unesite naziv grupe:
+          <mat-form-field class="example-full-width">
+            <textarea [(ngModel)]="raspored.grupa" placeholder="Pi ili Vi, gde je 'i' neki broj" name="rasporedGrupa" #rasporedGrupa="ngModel" required="true" matInput></textarea>
+            <mat-error *ngIf="rasporedGrupa.invalid">Obavezno polje!</mat-error>
+          </mat-form-field>
+          <span style="color:red">{{rasporedGrupaError}}</span>
+          <br/>
+          <button mat-raised-button color="primary" type="submit">Sačuvajte</button>
+        </form>
+    </mat-card>
+  </main>
+</span>

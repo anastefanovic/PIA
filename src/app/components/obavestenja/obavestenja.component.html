@@ -1,0 +1,40 @@
+<!-------------------------------------- Insert obavestenje ------------------------------------------->
+
+<span *ngIf="isAdmin">
+  <main>
+    <mat-card>
+      <h2><b>Dodajte novo obaveštenje</b></h2>
+      <form (submit)="onObavestenjeInsert(signupForm)" #signupForm="ngForm">
+        <mat-form-field class="example-full-width">
+          <mat-label>Obaveštenje: </mat-label>
+          <textarea [(ngModel)]="newObavestenje.sadrzaj" name="predavanja" #sadrzajInput="ngModel" matInput required="true"></textarea>
+          <mat-error *ngIf="sadrzajInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Datum: </mat-label>
+          <textarea [(ngModel)]="datum" name="datum" placeholder="yyyy-mm-dd" #datumInput="ngModel" matInput ></textarea>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" type="submit">Sačuvajte</button>
+      </form>
+    </mat-card>
+  </main>
+</span>
+
+<!-------------------------------------- Lista obavestenja ------------------------------------------->
+
+<span *ngIf="1">
+  <main>
+    <h1><b>{{modes[mode]}}</b></h1>
+    <mat-card>
+      <span *ngIf="obavestenja.length == 0" style="color:red"><b>Nema aktuelnih obaveštenja</b></span>
+      <li *ngFor='let o of obavestenja'>
+        <b>{{convertDatum(o.datum)}}</b>
+        <span *ngIf="isAdmin">
+          &nbsp;&nbsp;&nbsp;<button mat-raised-button color="accent" (click)="onDelete(o)">Brisanje</button>
+        </span>
+      <br/> {{o.sadrzaj}} <br/><br/></li>
+  </mat-card>
+  </main>
+</span>
+

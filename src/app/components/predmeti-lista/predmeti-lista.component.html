@@ -1,0 +1,15 @@
+<main>
+  <h2><b>{{naslovi[smer]}}</b></h2>
+<span *ngFor="let i of semestri">
+  <span *ngIf="poSemestru(i).length > 0">
+    <h4><b>Semestar {{i}}</b></h4>
+    <mat-card>
+    <li *ngFor="let p of poSemestru(i)">
+      <span *ngIf="p.semestar == i" >
+        {{p.ime}}
+      </span>
+  </li>
+</mat-card>
+</span>
+</span>
+</main>

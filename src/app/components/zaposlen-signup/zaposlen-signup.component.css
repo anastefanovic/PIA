@@ -1,0 +1,25 @@
+mat-form-field {
+  width: 100%;
+}
+
+.errorMessage {
+  color: red;
+}
+
+mat-card {
+  width: 60%;
+  margin: 2rem auto;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.image-preview {
+  height: 5rem;
+  margin: 1rem 0;
+}
+
+.image-preview img {
+  height: 100%;
+}

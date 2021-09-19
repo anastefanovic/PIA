@@ -1,0 +1,42 @@
+<mat-card>
+  <h2><b>Registracija novog studenta</b></h2>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Ime" [(ngModel)]="student.ime" name="ime" #imeInput="ngModel" required="true">
+      <mat-error *ngIf="imeInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Prezime" [(ngModel)]="student.prezime" name="prezime" #prezimeInput="ngModel" required="true">
+      <mat-error *ngIf="prezimeInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" matInput placeholder="Lozinka" [(ngModel)]="student.lozinka" name="lozinka" #lozinkaInput="ngModel" required="true">
+      <mat-error *ngIf="lozinkaInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Indeks (GGGG/BBBB)" [(ngModel)]="student.indeks" name="indeks" #indeksInput="ngModel" required="true">
+      <mat-error *ngIf="indeksInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <span class='errorMessage'>
+      {{indeksError}}
+    </span>
+    <mat-form-field appearance="fill">
+      <mat-label>Tip studija</mat-label>
+      <mat-select [(ngModel)]="student.tipStudija" name="tipStudija" #tipStudijaInput="ngModel" required="true">
+        <mat-option *ngFor="let studije of tipovi_studija" [value]="studije">
+          {{studije}}
+        </mat-option>
+      </mat-select>
+      <mat-error tipStudijaInput.invalid>Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="student.status" name="status" #statusInput="ngModel" required="true">
+        <mat-option [value]="'Aktivan'">Aktivan</mat-option>
+        <mat-option [value]="'Neaktivan'">Neaktivan</mat-option>
+      </mat-select>
+      <mat-error tipStudijaInput.invalid>Obavezno polje!</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Registracija</button>
+  </form>
+</mat-card>

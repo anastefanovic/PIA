@@ -1,0 +1,17 @@
+mat-form-field {
+  width: 100%;
+}
+
+.errorMessage {
+  color: red;
+}
+
+main {
+  width: 60%;
+  margin: 2rem auto;
+}
+
+mat-card {
+  width: 60%;
+  margin: 2rem auto;
+}

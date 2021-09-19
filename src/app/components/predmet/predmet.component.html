@@ -1,0 +1,367 @@
+<!------------------------------------------------- Menu ------------------------------------------------->
+<mat-toolbar color="primary">
+  <span *ngIf="predmet != null">
+    {{predmet.ime}}
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('nazad')">Nazad</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('info')">O predmetu</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button  (click)="onClick('obavestenja')">Obavestenja</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('predavanja')">Predavanja/Vežbe</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('ispiti')">Ispiti</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button  (click)="onClick('lab')">Laboratorija</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('projekat')">Projekat</button>
+  </span>
+</mat-toolbar>
+
+<!------------------------------------------------- Update info -------------------------------------------------------->
+
+<span *ngIf="tip == 'zaposlen' && updateInfo == 1">
+  <main>
+    <h2><b>Izmena podataka o predmetu</b></h2>
+    <mat-card>
+      <form (submit)="onPredmetUpdate(signupForm)" #signupForm="ngForm">
+        <mat-form-field>
+          <input type="text" matInput placeholder="Ime" [(ngModel)]="predmet.ime" name="ime" #imeInput="ngModel" required="true">
+          <mat-error *ngIf="imeInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Tip predmeta</mat-label>
+          <mat-select [(ngModel)]="predmet.tip" name="tipPredmeta" #tipPredmetaInput="ngModel" required="true">
+            <mat-option  [value]="'obavezan'">Obavezan</mat-option>
+            <mat-option  [value]="'izborni'">Izborni</mat-option>
+          </mat-select>
+          <mat-error tipPredmetaInput.invalid>Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" matInput placeholder="ESPB" [(ngModel)]="predmet.espb" name="espb" #espbInput="ngModel" required="true">
+          <mat-error *ngIf="espbInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Termin predavanja:</mat-label>
+          <textarea [(ngModel)]="predmet.predavanja" name="predavanja" #predavanjaInput="ngModel" matInput required="true" placeholder="Termini predavanja"></textarea>
+          <mat-error *ngIf="predavanjaInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Termin vezbi</mat-label>
+          <textarea [(ngModel)]="predmet.vezbe" name="vezbe" #vezbeInput="ngModel" required="true" matInput placeholder="Termini vezbi"></textarea>
+          <mat-error *ngIf="vezbeInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" matInput placeholder="Semestar" [(ngModel)]="predmet.semestar" name="semestar" #semestarInput="ngModel" required="true">
+          <mat-error *ngIf="semestarInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{semestarError}}</span>
+        <mat-form-field class="example-full-width">
+          <mat-label>Cilj predmeta</mat-label>
+          <textarea [(ngModel)]="predmet.cilj" name="ciljPredmeta" #ciljInput="ngModel" matInput placeholder="Cilj predmeta"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Propozicije</mat-label>
+          <textarea [(ngModel)]="predmet.propozicije" name="propozicije" #propozicijeInput="ngModel" matInput placeholder="Propozicije predmeta"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Nastavnici</mat-label>
+          <textarea [(ngModel)]="updateNastavnici" name="nastavnici" #nastavniciInput="ngModel" required="true" matInput placeholder="Predavaci"></textarea>
+          <mat-error *ngIf="nastavniciInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <span style="color:red">{{nastavniciError}}</span>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Smer (RTI, SI, ili OSTALO)" [(ngModel)]="predmet.smer" name="smer" #smerInput="ngModel" required="true">
+          <mat-error *ngIf="smerInput.invalid">Obavezno polje!</mat-error>
+        </mat-form-field>
+        <br/>
+        <button mat-raised-button color="primary" type="submit">Sačuvajte izmene</button>
+      </form>
+  </mat-card>
+</main>
+</span>
+
+<!------------------------------------------------- Info --------------------------------------------------------------->
+
+<span *ngIf="tip == 'zaposlen' && info == 1 && updateInfo == 0">
+  <main>
+    <button mat-raised-button color="primary" (click)="onClick('updateInfo')">Izmenite informacije</button>
+  </main>
+</span>
+
+<span *ngIf="info == 1">
+  <span *ngIf="predmet != null">
+  <main>
+    <h1><b>O predmetu</b></h1>
+    <mat-card>
+      <b>Naziv predmeta:  </b> {{predmet.ime}}
+      <br/><br/>
+      <b>Sifra predmeta:  </b> {{predmet.sifra}}
+      <br/><br/>
+      <b>Tip predmeta:  </b> {{predmet.tip}}
+      <br/><br/>
+      <b>ESPB:  </b> {{predmet.espb}}
+      <br/><br/>
+      <span *ngIf = "predmet.cilj != null">
+      <b>Cilj predmeta:  </b> {{predmet.cilj}}
+      <br/><br/>
+      </span>
+      <b>Termin predavanja:  </b> {{predmet.predavanja}}
+      <br/><br/>
+      <b>Termin vezbi:  </b> {{predmet.vezbe}}
+      <br/><br/>
+      <span *ngIf = "predmet.propozicije != null">
+      <b>Propozicije:  </b> {{predmet.propozicije}}
+      <br/><br/>
+      </span>
+      <b>Nastavnici:  </b>
+      <li *ngFor='let n of nastavnici'>
+        <a routerLink="/profil/{{n.korime}}"> {{n.ime}} {{n.prezime}} </a>
+      </li>
+      <br/>
+    </mat-card>
+  </main>
+</span>
+</span>
+
+<!------------------------------------------------- Insert bavestenja ------------------------------------------------->
+
+<span *ngIf="tip == 'zaposlen' && obavestenja == 1 && novoObavestenje == 0">
+<main>
+  <button mat-raised-button color="primary" (click)="onClick('novoObavestenje')">Novo obaveštenje</button>
+</main>
+</span>
+
+<span *ngIf="tip == 'zaposlen' && obavestenja == 1 && novoObavestenje == 1">
+  <main>
+        <mat-card>
+          <h2><b>Novo obaveštenje</b></h2>
+          <form (submit)="onObavestenjeInsert(signupForm)" #signupForm="ngForm">
+          <mat-form-field>
+            <mat-label>Obaveštenje</mat-label>
+              <textarea [(ngModel)]="predmetObavestenje.obavestenje" name="obavestenje" #obavestenjeInput="ngModel" matInput placeholder="Obaveštenje" required="true"></textarea>
+              <mat-error *ngIf="obavestenjeInput.invalid">Obavezno polje!</mat-error>
+            </mat-form-field>
+            <!----- KALENDAR ------>
+            <mat-form-field appearance="fill">
+              <mat-label>Datum</mat-label>
+              <input matInput name="datum" #datumInput="ngModel" [(ngModel)]="predmetObavestenje.datum" [matDatepicker]="picker" required="true">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="datumInput.invalid">Obavezno polje!</mat-error>
+            </mat-form-field>
+            <br>
+            <button mat-raised-button color="primary" type="submit">Sačuvajte</button>
+          </form>
+        </mat-card>
+  </main>
+  </span>
+
+<!------------------------------------------------- Obavestenja ------------------------------------------------->
+
+<span *ngIf="obavestenja == 1">
+  <span *ngIf="predmet != null">
+  <main>
+    <h1><b>Obaveštenja</b></h1>
+    <mat-card>
+      <span *ngIf="novaObavestenja.length > 0">
+        <li *ngFor='let n of novaObavestenja'>
+          <b>{{convertDatum(n.datum)}} </b> &nbsp;&nbsp;
+          <span *ngIf = "tip == 'zaposlen'">
+            <button mat-raised-button color="accent" (click)="obavestenjeDelete(n)">Brisanje</button>
+          </span>
+          <br/>{{n.obavestenje}} <br/><br/>
+        </li>
+      </span>
+    <span *ngIf="staraObavestenja.length > 0">
+    <mat-accordion>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+           <b>Stara obavestenja</b>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <li *ngFor='let s of staraObavestenja'>
+          <b>{{convertDatum(s.datum)}}</b> &nbsp;&nbsp;
+          <span *ngIf = "tip == 'zaposlen'">
+            <button mat-raised-button color="accent" (click)="obavestenjeDelete(s)">Brisanje</button>
+          </span>
+          <br/> {{s.obavestenje}} <br/><br/>
+        </li>
+      </mat-expansion-panel>
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+      </mat-expansion-panel>
+    </mat-accordion>
+  </span>
+  </mat-card>
+  </main>
+</span>
+</span>
+
+<!------------------------------------------------- Laboratorija ------------------------------------------------->
+
+<span *ngIf="lab == 1">
+  <main>
+    <h1><b>Laboratorijske vežbe</b></h1>
+    <mat-card>
+
+    </mat-card>
+  </main>
+</span>
+
+<!------------------------------------------------- Predavanja ------------------------------------------------->
+
+<span *ngIf="tip == 'zaposlen' && predavanja == 1">
+  <main>
+    <button mat-raised-button color="primary" type="button" (click)="filePicker.click()">Ubacite fajl</button>
+    <input class='hide' type="file" #filePicker (change)="onPredavanjePicked($event)">
+  </main>
+</span>
+
+<span *ngIf="predavanja == 1">
+  <span *ngIf="predmet != null">
+  <main>
+    <h1><b>Materijali za predavanja</b></h1>
+    <mat-card>
+      <li *ngFor='let m of materijaliP'><b>{{convertDatum(m.datum)}}</b>&nbsp;&nbsp;
+        <span *ngIf="tip == 'zaposlen'">
+          <button mat-raised-button color="accent" type="button" (click)="deletePredavanje(m)">Brisanje</button>
+         </span>
+         <br/>
+         <br/>&nbsp;&nbsp; <b>fajl: </b> <a [href]="m.fajlPath" target="blank">{{m.naziv}}</a>
+         <br/>&nbsp;&nbsp; <b>autor: </b>{{getZaposlen(m.autor).ime}} {{getZaposlen(m.autor).prezime}}
+         <br/>&nbsp;&nbsp; <b>veličina: </b> {{m.velicina}}
+         <br/>
+         <hr>
+        <br/>
+    </li>
+  </mat-card>
+  </main>
+</span>
+</span>
+<br/><br/>
+
+<!------------------------------------------------- Vezbe ------------------------------------------------->
+
+<span *ngIf="tip == 'zaposlen' && predavanja == 1">
+  <main>
+    <button mat-raised-button color="primary" type="button" (click)="filePicker.click()">Ubacite fajl</button>
+    <input class='hide' type="file" #filePicker (change)="onVezbaPicked($event)">
+  </main>
+</span>
+
+<span *ngIf="predavanja == 1">
+  <span *ngIf="predmet != null">
+  <main>
+    <h1><b>Materijali za vežbe</b></h1>
+    <mat-card>
+      <li *ngFor='let m of materijaliV'><b>{{convertDatum(m.datum)}}</b>&nbsp;&nbsp;
+        <span *ngIf="tip == 'zaposlen'">
+          <button mat-raised-button color="accent" type="button" (click)="deletePredavanje(m)">Brisanje</button>
+         </span>
+         <br/>
+         <br/>&nbsp;&nbsp; <b>fajl: </b> <a [href]="m.fajlPath" target="blank">{{m.naziv}}</a>
+         <br/>&nbsp;&nbsp; <b>autor: </b>{{getZaposlen(m.autor).ime}} {{getZaposlen(m.autor).prezime}}
+         <br/>&nbsp;&nbsp; <b>veličina: </b> {{m.velicina}}
+         <br/>
+         <hr>
+        <br/>
+    </li>
+  </mat-card>
+  </main>
+</span>
+</span>
+
+<!------------------------------------------------- Ispiti ------------------------------------------------->
+
+<span *ngIf="tip == 'zaposlen' && ispiti == 1">
+  <main>
+        <mat-card>
+          <button mat-raised-button  type="button" (click)="filePicker.click()">Ubacite fajl</button>
+          <input class='hide' type="file" #filePicker (change)="onRokPicked($event)">
+          <form (submit)="onRokSave(signupForm)" #signupForm="ngForm">
+            <br/>
+            <mat-form-field appearance="fill">
+              <mat-label>Tip dokumenta</mat-label>
+              <mat-select [(ngModel)]="rok.tip" name="tip" #tipInput="ngModel" required="true">
+                <mat-option [value]="'Z'">Zadatak</mat-option>
+                <mat-option [value]="'R'">Rešenje</mat-option>
+              </mat-select>
+              <mat-error tipInput.invalid>Obavezno polje!</mat-error>
+            </mat-form-field>
+            {{rok.tip}}
+            <!----- KALENDAR ------>
+            <mat-form-field appearance="fill">
+              <mat-label>Datum</mat-label>
+              <input matInput name="datum" #datumInput="ngModel" [(ngModel)]="rok.datum" [matDatepicker]="picker" required="true">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="datumInput.invalid">Obavezno polje!</mat-error>
+            </mat-form-field>
+            <br>
+            <button mat-raised-button color="primary" type="submit">Sačuvajte</button>
+          </form>
+        </mat-card>
+  </main>
+  </span>
+<br/><br/>
+
+<span *ngIf="ispiti == 1">
+  <span *ngIf="predmet != null">
+    <main>
+      <h1><b>Ispitni zadaci</b></h1>
+      <mat-card>
+        <li *ngFor='let z of zadaci'>
+          <b> Rok: {{convertDatum(z.datum)}}</b>&nbsp;&nbsp;
+          <span *ngIf="tip == 'zaposlen'">
+            <button mat-raised-button color="accent" type="button" (click)="deleteRok(z)">Brisanje</button>
+           </span>
+           <br/>
+           <br/>&nbsp;&nbsp; <b>zadatak: </b> <a [href]="z.fajlPath" target="blank">{{z.naziv}}</a>
+           <br/>
+           <hr>
+          <br/>
+      </li>
+    </mat-card>
+    </main>
+  </span>
+  </span>
+  <br/><br/>
+
+  <span *ngIf="ispiti == 1">
+    <span *ngIf="predmet != null">
+      <main>
+        <h1><b>Rešenja ispitnih zadataka</b></h1>
+        <mat-card>
+          <li *ngFor='let r of resenja'>
+            <b> Rok: {{convertDatum(r.datum)}}</b>&nbsp;&nbsp;
+            <span *ngIf="tip == 'zaposlen'">
+              <button mat-raised-button color="accent" type="button" (click)="deleteRok(r)">Brisanje</button>
+             </span>
+             <br/>
+             <br/>&nbsp;&nbsp; <b>rešenje: </b> <a [href]="r.fajlPath" target="blank">{{r.naziv}}</a>
+             <br/>
+             <hr>
+            <br/>
+        </li>
+      </mat-card>
+      </main>
+    </span>
+    </span>
+    <br/><br/>

@@ -1,0 +1,43 @@
+<!------------------------------------------------ Menu------------------------------------------------>
+
+<mat-toolbar color="primary">
+  <span *ngIf="student != null">
+    {{student.ime}} {{student.prezime}}
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('predmeti')">Moji predmeti</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onClick('lozinka')">Promena lozinke</button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-button (click)="onLogout()">Odjava</button>
+  </span>
+</mat-toolbar>
+
+<!------------------------------------------------ Lozinka ------------------------------------------------>
+
+<span *ngIf="expand == 'lozinka'">
+  <app-lozinka></app-lozinka>
+</span>
+
+<!------------------------------------------------ Predmeti ------------------------------------------------>
+
+<span *ngIf="expand == 'predmeti'">
+  <main>
+  <h2><b>Predmeti koje pratite</b></h2>
+      <mat-card>
+        <span *ngIf="predmeti.length > 0">
+      <li *ngFor="let p of predmeti">
+        <b>Naziv predmeta: </b> {{p.ime}}
+        <br/>&nbsp;&nbsp;&nbsp;&nbsp; <b>Semestar: </b> {{p.semestar}}
+        <br/> &nbsp;&nbsp;&nbsp;&nbsp; <b>Info: </b>
+        <a routerLink="/predmet/{{p.sifra}}/student/{{korime}}">{{p.sifra}}</a>
+    </li>
+  </span>
+    </mat-card>
+  </main>
+</span>

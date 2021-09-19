@@ -1,0 +1,36 @@
+<main>
+<form (submit)="onLogin(loginForm)" #loginForm="ngForm">
+    <mat-radio-group aria-label="Tip profila:" color="primary" name="tip" #tipInput="ngModel" [(ngModel)]="tip">
+      <mat-radio-button value="Administrator" [checked]="true">Administrator &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+      <mat-radio-button value="Zaposlen" [checked]="true">Zaposlen &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+      <mat-radio-button value="Student">Student</mat-radio-button>
+    </mat-radio-group>
+    <br/><br/>
+  <mat-card>
+    <mat-form-field>
+      <input type="email" matInput placeholder="Korisnicko ime" [(ngModel)]="korime" name="korime" #korimeInput="ngModel" required="true">
+      <mat-error *ngIf="korimeInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" matInput placeholder="Lozinka" [(ngModel)]="lozinka" name="lozinka" #lozinkaInput="ngModel" required="true">
+      <mat-error *ngIf="lozinkaInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Prijava</button>
+  </mat-card>
+  <div class='errorMessage'>
+    {{errorMessage}}
+  </div>
+</form>
+<br/>
+<h4>
+  Registrujte se kao: <br/>
+  <a routerLink="/zaposlen-signup">>Zaposlen</a>
+  <br/>
+  <a routerLink="/student-signup">>Student</a>
+  <br/>
+</h4>
+<br/>
+<img src="http://localhost:3000/slider_images/slika1.png">
+</main>
+
+

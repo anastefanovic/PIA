@@ -1,0 +1,19 @@
+<mat-card>
+  <h2><b>Promena lozinke</b></h2>
+  <form (submit)="onClick(signupForm)" #signupForm="ngForm">
+    <mat-form-field>
+      <input type="password" matInput placeholder="Stara lozinka" [(ngModel)]="stara" name="stara" #staraInput="ngModel" required="true">
+      <mat-error *ngIf="staraInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" matInput placeholder="Nova lozinka" [(ngModel)]="nova" name="nova" #novaInput="ngModel" required="true">
+      <mat-error *ngIf="novaInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <span class='errorMessage'>
+      {{error}}
+    </span>
+    <br/>
+    <button mat-raised-button color="primary" type="submit">Sačuvajte</button>
+  </form>
+</mat-card>
+

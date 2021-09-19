@@ -1,0 +1,87 @@
+<mat-card>
+  <h2><b>Registracija novog zaposlenog</b></h2>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm">
+    <!------------------------------------------ SLIKA ------------------------------------------------------>
+    <button mat-stroked-button type="button" (click)="filePicker.click()">Ubacite fotografiju</button>
+    <input class='hide' type="file" #filePicker (change)="onImagePicked($event)">
+    <div class="image-preview" *ngIf=" imagePreview !== '' && imagePreview">
+      <img [src]="imagePreview" [alt]="'slika'">
+    </div>
+    <!-------------------------------------------------------------------------------------------------------->
+    <mat-form-field>
+      <input type="text" matInput placeholder="Ime" [(ngModel)]="zaposlen.ime" name="ime" #imeInput="ngModel" required="true">
+      <mat-error *ngIf="imeInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Prezime" [(ngModel)]="zaposlen.prezime" name="prezime" #prezimeInput="ngModel" required="true">
+      <mat-error *ngIf="prezimeInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Korisnicko ime" [(ngModel)]="zaposlen.korime" name="korime" #korimeInput="ngModel" required="true">
+      <mat-error *ngIf="korimeInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <span class='errorMessage'>
+      {{korimeError}}
+    </span>
+    <mat-form-field>
+      <input type="password" matInput placeholder="Lozinka" [(ngModel)]="zaposlen.lozinka" name="lozinka" #lozinkaInput="ngModel" required="true">
+      <mat-error *ngIf="lozinkaInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Adresa" [(ngModel)]="zaposlen.adresa" name="adresa" #adresaInput="ngModel" required="true">
+      <mat-error *ngIf="adresaInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Mobilni telefon" [(ngModel)]="zaposlen.mobilni" name="mobilni" #mobilniInput="ngModel">
+    </mat-form-field>
+    <span class='errorMessage'>
+      {{mobilniError}}
+    </span>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Adresa licnog vebsajta" [(ngModel)]="zaposlen.vebsajt" name="vebsajt" #vebsajtInput="ngModel">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Licni podaci</mat-label>
+      <textarea matInput placeholder="Vasa strucna bografija:" [(ngModel)]="zaposlen.bio" name="bio" #bioInput="ngModel"></textarea>
+    </mat-form-field>
+    <mat-radio-group aria-label="Tip zvanja:" color="primary" name="tipZvanja" #tipInput="ngModel" [(ngModel)]="zaposlen.tipZvanja">
+      <mat-radio-button value="Nastavni" [checked]="true">Nastavno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+      <mat-radio-button value="Nenastavni">Nenastavno</mat-radio-button>
+    </mat-radio-group>
+    <div *ngIf="zaposlen.tipZvanja == 'Nenastavni'">
+      <mat-form-field appearance="fill">
+        <mat-label>Nenastavno zvanje</mat-label>
+        <mat-select [(ngModel)]="zaposlen.zvanje" name="nenastavnoZvanje" #nenastavnoZvanjeInput="ngModel" required="zaposlen.tipZvanja == 'Nenastavni'">
+          <mat-option *ngFor="let zvanje of nenastavna_zvanja" [value]="zvanje">
+            {{zvanje}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="zaposlen.tipZvanja=='Nenastavni' && nenastavnoZvanjeInput.invalid">Obavezno polje!</mat-error>
+      </mat-form-field>
+    </div>
+    <div *ngIf="zaposlen.tipZvanja == 'Nastavni'">
+      <mat-form-field appearance="fill">
+        <mat-label>Nastavno zvanje</mat-label>
+        <mat-select [(ngModel)]="zaposlen.zvanje" name="nastavnoZvanje" #nastavnoZvanjeInput="ngModel" required="zaposlen.tipZvanja == 'Nastavni'">
+          <mat-option *ngFor="let zvanje of nastavna_zvanja" [value]="zvanje">
+            {{zvanje}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="zaposlen.tipZvanja=='Nastavni' && nastavnoZvanjeInput.invalid">Obavezno polje!</mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Broj kabineta" [(ngModel)]="zaposlen.kabinet" name="kabinet" #kabinetInput="ngModel" required="true">
+      <mat-error *ngIf="kabinetInput.invalid">Obavezno polje!</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="zaposlen.status" name="status" #statusInput="ngModel" required="true">
+        <mat-option [value]="'Aktivan'">Aktivan</mat-option>
+        <mat-option [value]="'Neaktivan'">Neaktivan</mat-option>
+      </mat-select>
+      <mat-error tipStudijaInput.invalid>Obavezno polje!</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Registracija</button>
+  </form>
+</mat-card>
